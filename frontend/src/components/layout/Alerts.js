@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 
 export class Alerts extends Component {
   static propTypes = {
-    error: PropTypes.object.isRequired
-   // message: PropTypes.object.isRequired,
+    error: PropTypes.object.isRequired,
+    message: PropTypes.object.isRequired,
   };
 
   componentDidUpdate(prevProps) {
-    //const { error, alert, message } = this.props;
-    const { error, alert} = this.props;
+    const { error, alert, message } = this.props;
+    //const { error, alert} = this.props;
 
     if (error !== prevProps.error) {
       if (error.msg.name) alert.error(`Name: ${error.msg.name.join()}`);
@@ -21,11 +21,11 @@ export class Alerts extends Component {
       if (error.msg.username) alert.error(error.msg.username.join());
     }
 
-    // if (message !== prevProps.message) {
-    //   if (message.deleteLead) alert.success(message.deleteLead);
-    //   if (message.addLead) alert.success(message.addLead);
-    //   if (message.passwordNotMatch) alert.error(message.passwordNotMatch);
-    // }
+    if (message !== prevProps.message) {
+      if (message.deleteLead) alert.success(message.deleteLead);
+      if (message.addLead) alert.success(message.addLead);
+      if (message.passwordNotMatch) alert.error(message.passwordNotMatch);
+    }
   }
 
   render() {
@@ -34,8 +34,8 @@ export class Alerts extends Component {
 }
 
 const mapStateToProps = state => ({
-  error: state.errors
-  //message: state.messages,
+  error: state.errors,
+  message: state.messages
 });
 
 export default connect(mapStateToProps)(withAlert()(Alerts));
