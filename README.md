@@ -442,4 +442,60 @@ export  default  function (state = initialState, action){
 - reducers/index.js 에 메세지 리듀서 등록 import 
 - actions/messages.js 메세지용 액션 추가 
 - actions/leads.js 에 createmessage 추가 
+---
+# 5 강 Django Token Authentication
+## lead를 추가하고 업데이트하고 삭제하는것을 로그인없이 인증없이 진행해왔다.
+## 토큰으로 인증하며 add, delete, update 되도록 구현하겠다. 
 
+- APP/leads/models.py 에 인증모델 User 추가 
+```
++from django.contrib.auth.models import User
+생략
++ owner = models.ForeignKey(User, related_name="leads", on_delete=models.CASCADE, null=True) # 같이 없어져야하니까 CASCADE
+```
+
+- migrate하기 
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+- api.py 에서 permission_classes를 permissions.AllowAny를 IsAuthenticated로 바꾸기 
+```api.py
+class LeadViewSet(viewsets.ModelViewSet):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    serializer_class = LeadSerializer
+
+    def get_queryset(self):
+        return self.request.user.leads.all()
+    # lead를 create할때 우리가 lead owner를 저장하는것을 허락한다.
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+```
+## 접속하여 보면 아무것도 안보이고, console log 보면 403 forbidden 
+- error 타입추가하고 action에 오류날때 dispatch로 보내도록 구현
+- localhost:8000/api/leads GET 하면 msg 확인가능
+---
+## Knox 앱 추가 
+```
+You have 7 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): knox.
+Run 'python manage.py migrate' to apply them.
+```
+- python manage.py migrate
+- python manage.py startapp accounts 앱추가, setteing.py, urls.py accounts 추가
+- accounts앱에 serializer.py, api.py, urls.py 추가 
+## 등록 API 구현
+- serializer.py 유저 시리얼라이저, 등록 시리얼라이저가 있다. 모델은 장고에서 만들어주는 User 모델 사용
+- api.py rest-framework.generics의 제네릭api뷰 사용해서 post 함수 구현 리턴값은 user모델과 token 반환
+- POST localhost:8000/api/auth/register json 형식으로 username, email, password 보내보기 
+- 테스트 결과 user와 token 값을 받음 
+
+## login API 구현
+- serializer.py LoginSerializer 구현 (정보 일치하는지 확인하고 리턴user)
+- api.py LoginAPI 구현. post 함수구현 user와 token 리턴 
+
+## 테스트로 POST localhost:8000/api/auth/login json (유저네임, 패스워드)
+## 테스트로 GET localhost:8000/api/auth/user json (유저네임, 패스워드)
+- GET 할떄 Header Key : Authoriaztion, Value : Token 토큰값
