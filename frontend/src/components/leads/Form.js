@@ -8,8 +8,8 @@ export class Form extends Component {
     state = {
         name: '',
         email: '',
-        message: ''
-    }
+        message: '',
+    };
 
     static propTypes = {
         addLeads: PropTypes.func.isRequired
@@ -25,10 +25,9 @@ export class Form extends Component {
         this.setState({
             name:"",
             email:"",
-            message: ""
-        })
-    }
-
+            message: '',
+        });
+    };
 
 
     render() {
