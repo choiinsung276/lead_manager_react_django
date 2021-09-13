@@ -448,6 +448,17 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _com
 
 /***/ }),
 
+/***/ "./frontend/src/reducers/auth.js":
+/*!***************************************!*\
+  !*** ./frontend/src/reducers/auth.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nvar initialState = {\n  token: localStorage.getItem('token'),\n  isAuthenticated: null,\n  isLoading: false,\n  user: null\n}; //create function\n\n/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__() {\n  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;\n  var action = arguments.length > 1 ? arguments[1] : undefined;\n\n  switch (action.type) {\n    default:\n      return state;\n  }\n}\n\n//# sourceURL=webpack://lead_manager_react_django/./frontend/src/reducers/auth.js?");
+
+/***/ }),
+
 /***/ "./frontend/src/reducers/errors.js":
 /*!*****************************************!*\
   !*** ./frontend/src/reducers/errors.js ***!
@@ -466,7 +477,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! redux */ \"./node_modules/redux/es/redux.js\");\n/* harmony import */ var _leads__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./leads */ \"./frontend/src/reducers/leads.js\");\n/* harmony import */ var _errors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./errors */ \"./frontend/src/reducers/errors.js\");\n/* harmony import */ var _messages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./messages */ \"./frontend/src/reducers/messages.js\");\n\n\n\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,redux__WEBPACK_IMPORTED_MODULE_3__.combineReducers)({\n  leads: _leads__WEBPACK_IMPORTED_MODULE_0__[\"default\"],\n  errors: _errors__WEBPACK_IMPORTED_MODULE_1__[\"default\"],\n  messages: _messages__WEBPACK_IMPORTED_MODULE_2__[\"default\"] // leadReducer : leads 같이 쓰는데 일단은 그냥 leads파일 만 부를땐 leads\n\n}));\n\n//# sourceURL=webpack://lead_manager_react_django/./frontend/src/reducers/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! redux */ \"./node_modules/redux/es/redux.js\");\n/* harmony import */ var _leads__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./leads */ \"./frontend/src/reducers/leads.js\");\n/* harmony import */ var _errors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./errors */ \"./frontend/src/reducers/errors.js\");\n/* harmony import */ var _messages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./messages */ \"./frontend/src/reducers/messages.js\");\n/* harmony import */ var _auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./auth */ \"./frontend/src/reducers/auth.js\");\n\n\n\n\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,redux__WEBPACK_IMPORTED_MODULE_4__.combineReducers)({\n  leads: _leads__WEBPACK_IMPORTED_MODULE_0__[\"default\"],\n  errors: _errors__WEBPACK_IMPORTED_MODULE_1__[\"default\"],\n  messages: _messages__WEBPACK_IMPORTED_MODULE_2__[\"default\"],\n  auth: _auth__WEBPACK_IMPORTED_MODULE_3__[\"default\"] // leadReducer : leads 같이 쓰는데 일단은 그냥 leads파일 만 부를땐 leads\n\n}));\n\n//# sourceURL=webpack://lead_manager_react_django/./frontend/src/reducers/index.js?");
 
 /***/ }),
 
