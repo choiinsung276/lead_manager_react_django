@@ -1,8 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
+import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import Header from './layout/Header';
 import Dashboard from "./leads/Dashboard";
 import Alerts from "./layout/Alerts";
+import Login from "./accounts/Login";
+import Register from "./accounts/Register";
 import Leads from "./leads/Leads";
 import Form from "./leads/Form";
 
@@ -24,13 +27,19 @@ class App extends Component{
         return (
             <Provider store={store}>
             <AlertProvider template={AlertTemplate} {...alertOptions}>
-            <Fragment>
-                <Header />
-                <Alerts />
-                <div className="container">
-                    <Dashboard />
-                </div>
-            </Fragment>
+            <Router>
+                <Fragment>
+                    <Header />
+                    <Alerts />
+                    <div className="container">
+                        <Switch>
+                            <Route exact path = "/" component = {Dashboard}/>
+                            <Route exact path = "/register" component = {Register}/>
+                            <Route exact path = "/login" component = {Login}/>
+                        </Switch>
+                    </div>
+                </Fragment>
+            </Router>
             </AlertProvider>
             </Provider>
             );
