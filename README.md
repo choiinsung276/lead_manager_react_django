@@ -499,3 +499,102 @@ Run 'python manage.py migrate' to apply them.
 ## 테스트로 POST localhost:8000/api/auth/login json (유저네임, 패스워드)
 ## 테스트로 GET localhost:8000/api/auth/user json (유저네임, 패스워드)
 - GET 할떄 Header Key : Authoriaztion, Value : Token 토큰값
+---
+# 6강 Auth State Private Route
+## 로그인 및 등록 컴포넌트 만들기 !, react Router 설치 
+- State에 토큰정보가 있어야한다.
+- 로그인하지 않았을때 로그인 컴포넌트나 로그인 페이지로 리디렉션 하도록 라우터 구성
+
+- 라우팅 ? 다른 주소에 다른 화면을 보여준다. 리액트 라우터, 리치 라우터, Next.js 등이 있다. 
+
+- npm i react-router-dom
+- App.js 에 추가 
+- 많은 경우에 Browser router를 쓰지만, 이 강의에서는 백엔드와 프론트엔드 라우터가 있어서 HashRouter를 쓴다고함.
+- 컴포넌트들을 감싸는 라우터 태그 추가하기
+```javascript
+import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom"
+생략
+<Route exact path = "/" component = {Dashboard}/>
+<Route exact path = "/register" component = {Register}/>
+<Route exact path = "/login" component = {Login}/>
+생략
+
+```
+
+- components/  accounts 폴더 추가 Login.js , Register.js 추가 
+- Register.js에 class-based component 작성, state는 4개 , onChange, onSubmit 작성
+- Link 태그 이용해서 login으로 가도록
+- layout/Header.js 추가 
+---
+## auth 리듀서 추가
+- reducers/auth.js 추가, reducers/index.js import 하고 테스트  
+```javascript
+const initialState ={
+    token: localStorage.getItem('token'),
+    isAuthenticated: null,
+    isLoading: false,
+    user: null
+}
+//create function
+export default function (state = initialState, action){
+    switch (action.type){
+        default:
+            return state;
+    }
+}
+```
+- common/PrivateRoute.js 생성, state값을 보고 로그인 페이지로 redirect하도록
+## app 컴포넌트 전체에서 인증상태 확인하기
+- reducer/auth.js actions 타입에 따라 state 값을 만든다.
+- action/types.js 유저로딩중, 유저로드됨, 인증에러 타입 추가
+- action/auth.js 액션 함수들 구현 
+---
+# 7강 Frontend Authentication
+- 6강에서 로그인 컴포넌트를 뜨게 하는것을 했다면, 로그인 성공, 실패 관련한 프론트 내용
+- actions/types.js  2가지 타입 추가 
+```javascript
++export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
++export const LOGIN_FAIL = "LOGIN_FAIL"
+```
+- action/auth.js 로그인 액션함수 구현
+```javascript
+export const login = (username, password) => dispatch => {
+    // Headers
+    const config = {
+        headers:{
+            'Content-Type': 'application/json'
+        }
+    };
+    // Request Body
+    const body = JSON.stringify({username, password});
+	
+    axios.post('/api/auth/login',body, config).then(res => {
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: res.data
+        });
+    }).catch(err => {
+        dispatch(returnErrors(err.response.data, err.response.status));
+        dispatch({
+            type: LOGIN_FAIL
+        });
+    })
+}
+```
+- reducer/auth.js 타입에 맞게 리턴값들 설정  
+- accounts/Login.js 제출하기 할때 state를 login 액션함수로 보내고, render에서 props의 isAuthenticated 값을 보고 redirect하도록 구현
+## 테스트 후 Redux 확인
+- 아이디와 비밀번호 다르게 입력하면 LOGIN_FAIL 확인
+- 올바른 아이디 비밀번호 입력시 LOGIN_SUCCESS 확인
+---
+- auth 상태에 따라 Header 상태 바꾸기 
+- types.js 로그아웃 타입 추가 
+- auth.js logout 액션 함수 추가, axios로 logout으로 보내기 , type은 LOGOUT_SUCCES로
+- Header.js 에 logout버튼 클릭시 props.logout
+---
+- 유저이름과 패스워드 잘못 입력했을때 Redux 툴에서만 확인가능 사용자도 알수 있도록 
+- msg : non_field_errors, Incorrect Credentials
+- Alerts.js 에 error 추가 
+---
+- 로그인했을때 Header에 사용자 정보 나타나게 만들기 
+- Register 페이지에서 패스워드 안맞았을때 사용자가 볼수 있도록 Alert추가
